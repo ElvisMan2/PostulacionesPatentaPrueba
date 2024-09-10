@@ -164,6 +164,6 @@ app.get('/uploads/:file', (req, res) => {
     res.sendFile(path.join(__dirname, 'uploads', file));
 });
 
-app.listen(3000, () => {
+app.listen(80, () => {
     console.log('Servidor escuchando en el puerto 3000');
 });
