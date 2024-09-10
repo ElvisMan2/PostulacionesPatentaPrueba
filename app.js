@@ -14,15 +14,15 @@ const jwt = require('jsonwebtoken');
 const secretKey = '6LdUDjMqAAAAABBnVq8EKW_2tv_xCM4mvrDmxhRV';  // Reemplaza con tu clave secreta de reCAPTCHA
 
 // Cargar los certificados SSL
-const privateKey = fs.readFileSync('/etc/letsencrypt/live/programapatenta.com/privkey.pem', 'utf8');
-const certificate = fs.readFileSync('/etc/letsencrypt/live/programapatenta.com/cert.pem', 'utf8');
-const ca = fs.readFileSync('/etc/letsencrypt/live/programapatenta.com/chain.pem', 'utf8');
+//const privateKey = fs.readFileSync('/etc/letsencrypt/live/programapatenta.com/privkey.pem', 'utf8');
+//const certificate = fs.readFileSync('/etc/letsencrypt/live/programapatenta.com/cert.pem', 'utf8');
+//const ca = fs.readFileSync('/etc/letsencrypt/live/programapatenta.com/chain.pem', 'utf8');
 
-const credentials = {
-  key: privateKey,
-  cert: certificate,
-  ca: ca
-};
+//const credentials = {
+//  key: privateKey,
+//  cert: certificate,
+//  ca: ca
+//};
 
 // Redirigir todo el tráfico HTTP a HTTPS
 http.createServer((req, res) => {
@@ -31,12 +31,12 @@ http.createServer((req, res) => {
 }).listen(80);
 
 // Crear servidor HTTPS
-const httpsServer = https.createServer(credentials, app);
+//const httpsServer = https.createServer(credentials, app);
 
 // Servir la aplicación en HTTPS (puerto 443)
-httpsServer.listen(443, () => {
-  console.log('Servidor HTTPS corriendo en el puerto 443');
-});
+//httpsServer.listen(443, () => {
+//  console.log('Servidor HTTPS corriendo en el puerto 443');
+//});
 
 
 // Middleware para verificar el token JWT
