@@ -1,0 +1,22 @@
+.
+├── config/               # Configuraciones de base de datos, servidor, etc.
+│   ├── db.js             # Configuración de conexión a MySQL
+│   └── jwtConfig.js      # Configuración de la clave secreta JWT
+├── controllers/          # Controladores que gestionan la lógica de las rutas
+│   ├── authController.js # Controlador para el registro y login de usuarios
+│   └── fileController.js # Controlador para manejar la carga y descarga de archivos
+├── middlewares/          # Middlewares reutilizables
+│   ├── authMiddleware.js # Verificación de JWT
+│   └── multerConfig.js   # Configuración de Multer para manejar archivos
+├── models/               # Modelos que definen la estructura de las tablas de la base de datos
+│   └── userModel.js      # Modelo para usuarios
+├── public/               # Archivos estáticos accesibles públicamente
+│   └── index.html        # Página principal del frontend
+├── routes/               # Definición de rutas
+│   ├── authRoutes.js     # Rutas relacionadas con la autenticación
+│   └── fileRoutes.js     # Rutas para subir y descargar archivos
+├── uploads/              # Directorio para almacenar los archivos subidos
+│   └── [id]/             # Subcarpetas con el `id` de cada entrada en la base de datos
+├── app.js                # Punto de entrada principal del servidor
+├── package.json          # Dependencias y scripts del proyecto
+└── .env                  # Variables de entorno (puerto, credenciales de la base de datos, etc.)

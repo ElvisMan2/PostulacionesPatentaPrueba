@@ -5,6 +5,7 @@ const path = require('path');
 const fs = require('fs');
 const https = require('https');
 const http = require('http');  // Para redirigir de HTTP a HTTPS
+const { register, login } = require('./routes/authRoutes');
 
 const app = express();
 
@@ -87,56 +88,11 @@ db.connect((err) => {
 // Configurar el middleware para servir archivos estáticos
 app.use(express.static('public'));
 
-// Endpoint protegido para obtener los datos de la tabla postulaciones
-app.get('/postulaciones', verifyToken, (req, res) => {
-    const query = 'SELECT * FROM postulaciones';
-
-    db.query(query, (err, results) => {
-        if (err) {
-            return res.status(500).json({ success: false, message: 'Error al obtener los datos' });
-        }
-        res.json({ success: true, data: results });
-    });
-});
+// Endpoint para registro
+app.post('/registro', register);
 
 //endpoint para login
-app.post('/login', (req, res) => {
-    const { usuario, contrasena } = req.body;
-    const query = 'SELECT * FROM usuarios WHERE usuario = ?';
-
-    db.query(query, [usuario], (err, result) => {
-        if (err) throw err;
-        if (result.length > 0) {
-            const user = result[0];
-            if (user.contrasena === contrasena) { // Generar el JWT usando la misma clave secreta
-                const token = jwt.sign({ id: user.id, usuario: user.usuario }, secretKey, {//JWT
-                    expiresIn: '1h',  // Token válido por 1 hora
-                });
-                return res.json({ success: true, token });
-            } else {
-                return res.status(401).json({ success: false, message: 'Credenciales incorrectas' });
-            }
-        } else {
-            return res.status(404).json({ success: false, message: 'Usuario no encontrado' });
-        }
-    });
-});
-
-// Endpoint para registro
-app.post('/registro', (req, res) => {
-    console.log('Datos recibidos:', req.body);
-    const { usuario, contrasena, nombre_completo, email } = req.body;
-    
-    const query = 'INSERT INTO usuarios (usuario, contrasena, nombre_completo, email) VALUES (?, ?, ?, ?)';
-
-    db.query(query, [usuario, contrasena, nombre_completo, email], (err, result) => {
-        if (err) {
-            console.error('Error en la consulta:', err);  // Log del error en el servidor
-            return res.status(500).json({ success: false, message: 'Error en el servidor' });  // Enviar un JSON en caso de error
-        }
-        res.json({ success: true });
-    });
-});
+app.post('/login', login);
 
 // Endpoint para subir archivos
 app.post('/submit', upload.fields([
@@ -158,12 +114,24 @@ app.post('/submit', upload.fields([
     });
 });
 
+// Endpoint protegido para obtener los datos de la tabla postulaciones
+app.get('/postulaciones', verifyToken, (req, res) => {
+    const query = 'SELECT * FROM postulaciones';
+
+    db.query(query, (err, results) => {
+        if (err) {
+            return res.status(500).json({ success: false, message: 'Error al obtener los datos' });
+        }
+        res.json({ success: true, data: results });
+    });
+});
+
 // Endpoint para obtener un archivo
 app.get('/uploads/:file', (req, res) => {
     const file = req.params.file;
     res.sendFile(path.join(__dirname, 'uploads', file));
 });
 
-app.listen(80, () => {
+app.listen(3000, () => {
     console.log('Servidor escuchando en el puerto 3000');
 });
