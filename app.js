@@ -25,10 +25,10 @@ const secretKey = '6LdUDjMqAAAAABBnVq8EKW_2tv_xCM4mvrDmxhRV';  // Reemplaza con 
 //};
 
 // Redirigir todo el tráfico HTTP a HTTPS
-http.createServer((req, res) => {
-  res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
-  res.end();
-}).listen(80);
+//http.createServer((req, res) => {
+//  res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+//  res.end();
+//}).listen(80);
 
 // Crear servidor HTTPS
 //const httpsServer = https.createServer(credentials, app);
@@ -162,4 +162,8 @@ app.post('/submit', upload.fields([
 app.get('/uploads/:file', (req, res) => {
     const file = req.params.file;
     res.sendFile(path.join(__dirname, 'uploads', file));
+});
+
+app.listen(3000, () => {
+    console.log('Servidor escuchando en el puerto 3000');
 });
